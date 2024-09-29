@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
+import { RiArrowUpDownLine } from "react-icons/ri";
 
 const CurrencyConverter = () => {
   const [amount, setAmount] = useState(1);
   const [currencies, setCurrencies] = useState([]);
   const [from, setFrom] = useState("AUD");
   const [to, setTo] = useState("USD");
+  const [convertedAmount, setConvertedAmount] = useState("");
+  const [rate, setRate] = useState(null);
 
   const handleAmount = (e) => {
     const value = e.target.value;
@@ -15,6 +18,9 @@ const CurrencyConverter = () => {
   };
 
   const Currencies = async () => {
+    if (!amount) {
+      return;
+    }
     try {
       const res = await fetch("https://api.frankfurter.app/currencies");
       const data = await res.json();
@@ -30,7 +36,23 @@ const CurrencyConverter = () => {
 
   console.log(currencies);
 
-  const currenciesConverter = () => {};
+  const currenciesConverter = async () => {
+    try {
+      const res = await fetch(
+        `https://api.frankfurter.app/latest?amount=${amount}&from=${from}&to=${to}`
+      );
+      const data = await res.json();
+      setConvertedAmount(data.rates[to] + " " + to);
+      setRate(data.rates[to] / amount);
+    } catch (error) {
+      console.error("Error found", error);
+    }
+  };
+
+  const handleSwap = () => {
+    setFrom(to);
+    setTo(from);
+  };
 
   return (
     <div className="flex justify-center items-center h-screen absolute inset-0 bg-background bg-cover bg-center min-h-screen">
@@ -47,19 +69,25 @@ const CurrencyConverter = () => {
           />
         </label>
 
-        <form class="w-100 mx-auto mt-10">
-          <label for="underline_select">
-            From
-            <Dropdown currencies={currencies} />
-          </label>
-        </form>
+        <div>
+          From
+          <Dropdown
+            currencies={currencies}
+            currency={from}
+            setCurrency={setFrom}
+          />
+        </div>
 
-        <form class="max-w-sm mx-auto mt-10">
-          <label for="underline_select">
-            To
-            <Dropdown currencies={currencies} />
-          </label>
-        </form>
+        <div className="mt-5 mb-2">
+          <button onClick={handleSwap}>
+            <RiArrowUpDownLine className="size-6 " />
+          </button>
+        </div>
+
+        <div>
+          To
+          <Dropdown currencies={currencies} currency={to} setCurrency={setTo} />
+        </div>
 
         <button
           type="button"
@@ -69,7 +97,17 @@ const CurrencyConverter = () => {
           Convert
         </button>
 
-        <div>Converted Currencies</div>
+        <div>
+          Converted Currencies {convertedAmount}
+          <br />
+          <p>
+            {rate && (
+              <p className="text-black">
+                Exchange Rate: 1 {from} = {rate.toFixed(3)} {to}
+              </p>
+            )}
+          </p>
+        </div>
       </div>
     </div>
   );
