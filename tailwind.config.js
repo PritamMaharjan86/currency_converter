@@ -8,9 +8,11 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'background': "url('https://res.cloudinary.com/dedpvue13/image/upload/v1727583622/pexels-david-besh-884788_ati9tw.jpg')",
+        'background': "url('https://res.cloudinary.com/dedpvue13/image/upload/v1727668870/currency_sgowt2.jpg')",
       }
+      
     },
+    
   },
   plugins: [],
 }
