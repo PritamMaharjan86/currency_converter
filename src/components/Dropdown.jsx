@@ -35,7 +35,7 @@ const CurrenciesDropdown = ({
         <select
           value={currency}
           onChange={(e) => setCurrency(e.target.value)}
-          className="block w-25 h-full px-4 py-2 "
+          className="block w-25 h-full px-4 py-2 font-chakra "
         >
           
           {currencyCodes.map((currency) => {

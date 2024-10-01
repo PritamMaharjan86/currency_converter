@@ -15,7 +15,7 @@ const CurrencyConverter = () => {
     const value = e.target.value;
     console.log(import.meta.API_KEY);
 
-    if (/^\d+$/.test(value)) {
+    if (value === "" || /^\d+$/.test(value)) {
       setAmount(value);
       const apiKey = import.meta.env.VITE_API_KEY;
 
@@ -38,25 +38,11 @@ const CurrencyConverter = () => {
     }
   };
 
-  const fetchCurrencies = async () => {
-    try {
-      const res = await fetch("https://api.frankfurter.app/currencies");
-      const data = await res.json();
-      setCurrencies(Object.keys(data));
-    } catch (error) {
-      console.error("Error fetching currencies", error);
-    }
-  };
-
   useEffect(() => {
     if (amount > 0) {
       handleAmount({ target: { value: amount } });
     }
   }, [from, to]);
-
-  useEffect(() => {
-    fetchCurrencies();
-  }, []);
 
   const handleSwap = () => {
     const temp = from;
@@ -69,19 +55,18 @@ const CurrencyConverter = () => {
 
   return (
     <div className="flex justify-center items-center h-screen absolute inset-0 bg-background bg-cover bg-center min-h-screen">
-      <div className="border-solid border-5 flex flex-col justify-center items-center w-1/3 h-[30rem] p-4 shadow-2xl rounded-lg bg-white">
-        <h1 className="text-center text-3xl font-bold mb-10">
+      <div className="border-solid border-5 flex flex-col justify-center items-center w-1/3 h-[30rem] p-4 shadow-2xl rounded-lg bg-white outline outline-1 outline-black">
+        <h1 className="text-center text-3xl font-bold mb-10 font-chakra">
           CURRENCY CONVERTER
         </h1>
 
-        <div className="relative w-full">
+        <div className="relative w-full font-chakra">
           <input
             id="amount"
             value={amount}
             type="number"
             onChange={handleAmount}
-            className="border h-12 w-full p-3 font-chakra-petch peer"
-            style={{ fontFamily: "Roboto, sans-serif" }}
+            className="border h-12 w-full p-3 peer"
           />
           <label
             htmlFor="amount"
@@ -91,7 +76,6 @@ const CurrencyConverter = () => {
                   ? "-translate-y-10 scale-75 text-green-600"
                   : "translate-y-0 scale-100 text-green-600"
               } peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-3 peer-focus:-translate-y-10 peer-focus:scale-75 peer-focus:text-green-600`}
-            style={{ fontFamily: "Roboto, sans-serif" }}
           >
             {from} ({fromCurrencySymbol})
           </label>
@@ -109,22 +93,16 @@ const CurrencyConverter = () => {
           <Dropdown currencies={currencies} currency={to} setCurrency={setTo} />
         </div>
 
-        <div className="m-3 text-center w-full mt-20">
-          <p className="text-left">
+        <div className="m-3 text-center w-full mt-20 bg-green-400 p-3 rounded-md outline outline-1 outline-black">
+          <p className="text-left font-chakra">
             {fromCurrencySymbol} {amount} = <br />
           </p>
-          <p
-            className="text-3xl text-left"
-            style={{ fontFamily: "Roboto, sans-serif" }}
-          >
+          <p className="text-4xl text-left font-chakra font-semibold">
             {convertedAmount}
           </p>
           <br />
           {rate && (
-            <p
-              className="text-black font-chakra-petch mt-3 text-left"
-              style={{ fontFamily: "Roboto, sans-serif" }}
-            >
+            <p className="text-black font-chakra-petch mt-3 text-left font-chakra">
               1 {fromCurrencySymbol} = {Number(rate).toFixed(3)}{" "}
               {toCurrencySymbol}
             </p>

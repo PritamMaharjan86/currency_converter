@@ -10,9 +10,11 @@ export default {
       backgroundImage: {
         'background': "url('https://res.cloudinary.com/dedpvue13/image/upload/v1727668870/currency_sgowt2.jpg')",
       }
-      
+
+    }, fontFamily: {
+      chakra: ['"Chakra Petch"', 'sans-serif'],
     },
-    
+
   },
   plugins: [],
 }
