@@ -5,9 +5,8 @@ import getSymbolFromCurrency from "currency-symbol-map";
 
 const CurrencyConverter = () => {
   const [amount, setAmount] = useState("");
-  const [currencies, setCurrencies] = useState([]);
   const [from, setFrom] = useState("AUD");
-  const [to, setTo] = useState("USD");
+  const [to, setTo] = useState("NPR");
   const [convertedAmount, setConvertedAmount] = useState("");
   const [rate, setRate] = useState(null);
 
@@ -82,15 +81,11 @@ const CurrencyConverter = () => {
         </div>
 
         <div className="w-80 h-10 flex items-center justify-between space-x-2 mt-10">
-          <Dropdown
-            currencies={currencies}
-            currency={from}
-            setCurrency={setFrom}
-          />
+          <Dropdown currency={from} setCurrency={setFrom} />
           <button onClick={handleSwap} className="text-lg">
             <MdOutlineCurrencyExchange className="size-6 text-green-600 hover:animate-spin" />
           </button>
-          <Dropdown currencies={currencies} currency={to} setCurrency={setTo} />
+          <Dropdown currency={to} setCurrency={setTo} />
         </div>
 
         <div className="m-3 text-center w-full mt-20 bg-green-400 p-3 rounded-md outline outline-1 outline-black">
