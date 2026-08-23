@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
 import { MdOutlineCurrencyExchange } from "react-icons/md";
 import getSymbolFromCurrency from "currency-symbol-map";
@@ -8,7 +8,7 @@ const CurrencyConverter = () => {
   const [amount, setAmount] = useState("");
   const [from, setFrom] = useState("AUD");
   const [to, setTo] = useState("NPR");
-  const [convertedAmount, setConvertedAmount] = useState("");
+  const [convertedAmount, setConvertedAmount] = useState("0.00");
   const [rate, setRate] = useState(null);
   const [loading, setLoading] = useState(false);
   const [spin, setSpin] = useState(false);
@@ -23,7 +23,7 @@ const CurrencyConverter = () => {
 
       try {
         const res = await fetch(
-          `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${from}/${to}/${value}`
+          `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${from}/${to}/${value}`,
         );
         const data = await res.json();
 
@@ -82,7 +82,9 @@ const CurrencyConverter = () => {
           <label
             htmlFor="amount"
             className={`absolute left-3 top-3 text-black transition-all duration-200 transform ${
-              amount ? "-translate-y-10 scale-75" : "translate-y-0 scale-100 text-blue-500"
+              amount ?
+                "-translate-y-10 scale-75"
+              : "translate-y-0 scale-100 text-blue-500"
             } peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-3 peer-focus:-translate-y-10 peer-focus:scale-75`}>
             {from} ({fromCurrencySymbol})
           </label>
@@ -108,10 +110,7 @@ const CurrencyConverter = () => {
           />
         </div>
 
-        <div className="text-center w-full bg-slate-100 p-4 rounded-lg drop-shadow">
-          <p className="text-left font-nunito mb-1">
-            {fromCurrencySymbol} {amount} =
-          </p>
+        <div className="text-center w-full bg-slate-100 p-6 rounded-lg drop-shadow">
           <p className="text-2xl sm:text-4xl text-left font-nunito font-semibold">
             {convertedAmount}
           </p>
